@@ -3,13 +3,12 @@
   "compileOptions": {
     "less": true,
     "typescript": true,
-    "component2": true
+    "component2": true,
+    "enableNodeModuleBabelTransform": true,
+    "transpile": true
   },
   "developOptions": {
     "skipTranspile": true,
     "hotReload": true
-  },
-  "uploadExclude": [
-    "node_modules/**"
-  ]
+  }
 }

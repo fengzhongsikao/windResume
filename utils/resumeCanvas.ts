@@ -27,8 +27,9 @@ function wrapTextLines(ctx: any | null, text: string, maxWidth: number, fontSize
   if (!text) return [];
   const lines: string[] = [];
   let line = '';
-  for (const char of text) {
-    const next = line + char;
+  for (var i = 0; i < text.length; i++) {
+    var char = text[i];
+    var next = line + char;
     if (measureTextWidth(ctx, next, fontSize) > maxWidth && line) {
       lines.push(line);
       line = char;

@@ -8,7 +8,7 @@
       "@mini-types/alipay"
     ],
     "lib": [
-      "ES2016",
+      "ES2017",
       "DOM"
     ]
   },
