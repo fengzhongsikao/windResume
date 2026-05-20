@@ -9,6 +9,12 @@
 - **PDF 导出** — 基于 Canvas 渲染简历并生成 PDF，无需第三方库
 - **本地存储** — 使用 zustand 管理状态，数据持久化保存在本地
 
+## 截图预览
+
+| 首页 | 模板选择 |
+|:---:|:---:|
+| ![首页](images/Snipaste_2026-05-20_16-20-54.png) | ![制作简历](images/Snipaste_2026-05-20_16-21-06.png) |
+
 ## 项目结构
 
 ```
@@ -35,6 +41,7 @@
 │   ├── captureResume.ts      # 简历区域截图
 │   ├── imageToPdf.ts         # 图片转 PDF（纯前端实现）
 │   └── templateColors.ts     # 模板颜色配置
+├── images/                   # 项目截图
 └── .gitignore                # Git 忽略规则
 ```
 
@@ -93,10 +100,13 @@ pnpm install
 
 ## 上传部署
 
-项目已配置上传排除规则，`node_modules` 不会被打包上传：
+在支付宝小程序开发者工具中上传代码时，项目已开启编译转换，确保 `node_modules` 中的依赖能被正确处理：
 
 ```json
 {
-  "uploadExclude": ["node_modules/**"]
+  "compileOptions": {
+    "enableNodeModuleBabelTransform": true,
+    "transpile": true
+  }
 }
 ```
