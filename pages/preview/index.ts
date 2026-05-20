@@ -117,51 +117,45 @@ Page({
   ) {
     const self = this;
 
-    const clearCtx = my.createCanvasContext('pdfCanvas');
-    clearCtx.setFillStyle('#ffffff');
-    clearCtx.fillRect(0, 0, CANVAS_LOGICAL_WIDTH, logicalCanvasH);
-    clearCtx.draw(false, () => {
-      const drawCtx = my.createCanvasContext('pdfCanvas');
-      const finalLogicalY = drawResumeToCanvas(
-        drawCtx,
-        basicInfo,
-        modules,
-        selectedTemplate,
-        avatarText,
-        { skipBackground: true },
-      );
+    const ctx = my.createCanvasContext('pdfCanvas');
+    const finalLogicalY = drawResumeToCanvas(
+      ctx,
+      basicInfo,
+      modules,
+      selectedTemplate,
+      avatarText,
+    );
 
-      const logicalExportH = Math.ceil(finalLogicalY);
-      const destHeight = Math.ceil(finalLogicalY * exportScale * EXPORT_DPR);
+    const logicalExportH = Math.ceil(finalLogicalY);
+    const destHeight = Math.ceil(finalLogicalY * exportScale * EXPORT_DPR);
 
-      drawCtx.draw(false, () => {
-        setTimeout(() => {
-          my.canvasToTempFilePath({
-            canvasId: 'pdfCanvas',
-            x: 0,
-            y: 0,
-            width: CANVAS_LOGICAL_WIDTH,
-            height: logicalExportH,
-            destWidth,
-            destHeight,
-            fileType: 'jpg',
-            quality: 1,
-            success: (res: any) => {
-              self.setData({ canvasReady: false });
-              if (mode === 'album') {
-                self.saveImageToAlbum(res.tempFilePath);
-              } else {
-                self.savePdfToPhone(res.tempFilePath, destWidth, destHeight);
-              }
-            },
-            fail: () => {
-              my.hideLoading();
-              my.showToast({ content: '生成失败，请重试', type: 'fail' });
-              self.setData({ isExporting: false, canvasReady: false });
-            },
-          });
-        }, 300);
-      });
+    ctx.draw(false, () => {
+      setTimeout(() => {
+        my.canvasToTempFilePath({
+          canvasId: 'pdfCanvas',
+          x: 0,
+          y: 0,
+          width: CANVAS_LOGICAL_WIDTH,
+          height: logicalExportH,
+          destWidth,
+          destHeight,
+          fileType: 'jpg',
+          quality: 1,
+          success: (res: any) => {
+            self.setData({ canvasReady: false });
+            if (mode === 'album') {
+              self.saveImageToAlbum(res.tempFilePath);
+            } else {
+              self.savePdfToPhone(res.tempFilePath, destWidth, destHeight);
+            }
+          },
+          fail: () => {
+            my.hideLoading();
+            my.showToast({ content: '生成失败，请重试', type: 'fail' });
+            self.setData({ isExporting: false, canvasReady: false });
+          },
+        });
+      }, 300);
     });
   },
 

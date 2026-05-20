@@ -462,7 +462,6 @@ export function drawResumeToCanvas(
   modules: ModuleItem[],
   templateId: number,
   avatarText: string,
-  options?: { skipBackground?: boolean },
 ): number {
   const colors = getTemplateColors(templateId);
   const drawOptions: DrawContext = { basicInfo, modules, colors, templateId, avatarText };
@@ -470,25 +469,28 @@ export function drawResumeToCanvas(
   const sidebarW = colors.sidebarWidth || 240;
 
   const estimatedH = estimateResumeHeight(basicInfo, modules, templateId);
-  if (!options?.skipBackground) {
-    ctx.setFillStyle('#ffffff');
-    ctx.fillRect(0, 0, CANVAS_LOGICAL_WIDTH, estimatedH + 20);
-  }
+  ctx.setFillStyle('#ffffff');
+  ctx.fillRect(0, 0, CANVAS_LOGICAL_WIDTH, estimatedH + 20);
 
   const bodyX = isSidebar ? sidebarW + BODY_PADDING_X : BODY_PADDING_X;
   const contentWidth = isSidebar
     ? CANVAS_LOGICAL_WIDTH - sidebarW - BODY_PADDING_X * 2
     : CANVAS_LOGICAL_WIDTH - BODY_PADDING_X * 2;
 
+  const headerH = isSidebar ? estimatedH : 184;
+
   if (isSidebar) {
     drawSidebarHeader(ctx, drawOptions, estimatedH);
+    ctx.setFillStyle('#ffffff');
+    ctx.fillRect(sidebarW, 0, CANVAS_LOGICAL_WIDTH - sidebarW, estimatedH);
     if (colors.bodyBorder) {
       ctx.setFillStyle(colors.bodyBorder);
       ctx.fillRect(sidebarW, 0, 4, estimatedH);
     }
   } else {
-    const headerH = 184;
     drawVerticalHeader(ctx, drawOptions, headerH);
+    ctx.setFillStyle('#ffffff');
+    ctx.fillRect(0, headerH, CANVAS_LOGICAL_WIDTH, estimatedH - headerH);
     if (colors.bodyBorder) {
       ctx.setFillStyle(colors.bodyBorder);
       ctx.fillRect(0, headerH, CANVAS_LOGICAL_WIDTH, 4);

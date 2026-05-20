@@ -8,5 +8,8 @@
   "developOptions": {
     "skipTranspile": true,
     "hotReload": true
-  }
+  },
+  "uploadExclude": [
+    "node_modules/**"
+  ]
 }
