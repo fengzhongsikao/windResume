@@ -1,0 +1,12 @@
+{
+  "usingComponents": {
+    "ant-button": "antd-mini/es/Button/index",
+    "ant-input": "antd-mini/es/Input/index",
+    "ant-popup": "antd-mini/es/Popup/index",
+    "ant-modal": "antd-mini/es/Modal/index",
+    "ant-icon": "antd-mini/es/Icon/index",
+    "ant-tag": "antd-mini/es/Tag/index",
+    "ant-date-picker": "antd-mini/es/DatePicker/index",
+    "ant-textarea": "antd-mini/es/Input/Textarea/index"
+  }
+}

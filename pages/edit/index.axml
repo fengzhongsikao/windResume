@@ -1,0 +1,278 @@
+<view class="edit-page">
+  <view class="section-card">
+    <view class="section-title">基本信息</view>
+    <view class="form-group">
+      <view class="form-label">姓名</view>
+      <input
+        class="form-input"
+        placeholder="请输入姓名"
+        value="{{basicInfo.name}}"
+        onInput="onBasicInput"
+        data-field="name"
+      />
+    </view>
+    <view class="form-group">
+      <view class="form-label">年龄</view>
+      <input
+        class="form-input"
+        placeholder="请输入年龄"
+        type="number"
+        value="{{basicInfo.age}}"
+        onInput="onBasicInput"
+        data-field="age"
+      />
+    </view>
+    <view class="form-group">
+      <view class="form-label">邮箱</view>
+      <input
+        class="form-input"
+        placeholder="请输入邮箱"
+        value="{{basicInfo.email}}"
+        onInput="onBasicInput"
+        data-field="email"
+      />
+    </view>
+    <view class="form-group">
+      <view class="form-label">手机号</view>
+      <input
+        class="form-input"
+        placeholder="请输入手机号"
+        type="number"
+        value="{{basicInfo.phone}}"
+        onInput="onBasicInput"
+        data-field="phone"
+      />
+    </view>
+  </view>
+
+  <view class="section-card">
+    <view class="section-header">
+      <view class="section-title">简历模块</view>
+      <view class="module-count">已添加 {{modules.length}} 个</view>
+    </view>
+
+    <view class="module-empty" a:if="{{modules.length === 0}}">
+      <view class="empty-text">点击下方按钮添加简历模块</view>
+    </view>
+
+    <view class="module-list" a:if="{{modules.length > 0}}">
+      <view
+        class="module-item"
+        a:for="{{modules}}"
+        a:key="id"
+        data-index="{{index}}"
+        onTap="onEditModule"
+      >
+        <view class="module-icon">{{item.icon}}</view>
+        <view class="module-info">
+          <view class="module-label">{{item.label}}</view>
+          <view class="module-preview">{{modulePreviews[item.id] || '点击编辑'}}</view>
+        </view>
+        <view class="module-actions">
+          <view class="module-delete" catchTap="onDeleteModule" data-index="{{index}}">
+            <view class="delete-icon">×</view>
+          </view>
+          <view class="module-arrow">›</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="add-btn-wrap">
+    <ant-button type="primary" size="large" onTap="onShowAddPopup">
+      添加模块
+    </ant-button>
+  </view>
+
+  <ant-popup visible="{{showAddPopup}}" position="bottom" onClose="onCloseAddPopup">
+    <view class="popup-content">
+      <view class="popup-title">选择要添加的模块</view>
+      <view class="module-options">
+        <view
+          class="module-option"
+          a:for="{{availableModules}}"
+          a:key="type"
+          data-type="{{item.type}}"
+          onTap="onSelectModule"
+        >
+          <view class="option-icon">{{item.icon}}</view>
+          <view class="option-label">{{item.label}}</view>
+        </view>
+      </view>
+      <view class="popup-cancel" onTap="onCloseAddPopup">取消</view>
+    </view>
+  </ant-popup>
+
+  <ant-popup visible="{{showEditPopup}}" position="bottom" onClose="onCloseEditPopup">
+    <view class="popup-content edit-popup">
+      <view class="popup-title">{{editingModuleLabel}}</view>
+
+      <block a:if="{{editingModuleType === 'jobIntention'}}">
+        <view class="form-group">
+          <view class="form-label">期望职位</view>
+          <input class="form-input" placeholder="请输入期望职位" value="{{editForm.position}}" onInput="onEditFormInput" data-field="position" />
+        </view>
+        <view class="form-group">
+          <view class="form-label">期望城市</view>
+          <input class="form-input" placeholder="请输入期望城市" value="{{editForm.city}}" onInput="onEditFormInput" data-field="city" />
+        </view>
+        <view class="form-group">
+          <view class="form-label">期望薪资</view>
+          <input class="form-input" placeholder="如：10K-15K" value="{{editForm.salary}}" onInput="onEditFormInput" data-field="salary" />
+        </view>
+        <view class="form-group">
+          <view class="form-label">工作类型</view>
+          <input class="form-input" placeholder="如：全职/实习" value="{{editForm.type}}" onInput="onEditFormInput" data-field="type" />
+        </view>
+      </block>
+
+      <block a:if="{{editingModuleType === 'education'}}">
+        <view class="form-group">
+          <view class="form-label">学校名称</view>
+          <input class="form-input" placeholder="请输入学校名称" value="{{editForm.school}}" onInput="onEditFormInput" data-field="school" />
+        </view>
+        <view class="form-group">
+          <view class="form-label">专业</view>
+          <input class="form-input" placeholder="请输入专业" value="{{editForm.major}}" onInput="onEditFormInput" data-field="major" />
+        </view>
+        <view class="form-group">
+          <view class="form-label">学历</view>
+          <input class="form-input" placeholder="如：本科/硕士" value="{{editForm.degree}}" onInput="onEditFormInput" data-field="degree" />
+        </view>
+        <view class="form-row">
+          <view class="form-group half">
+            <view class="form-label">开始时间</view>
+            <view class="form-input" onTap="onOpenDatePicker" data-field="startDate">{{editForm.startDate || '请选择'}}</view>
+          </view>
+          <view class="form-group half">
+            <view class="form-label">结束时间</view>
+            <view class="form-input" onTap="onOpenDatePicker" data-field="endDate">{{editForm.endDate || '请选择'}}</view>
+          </view>
+        </view>
+        <view class="form-group">
+          <view class="form-label">描述</view>
+          <ant-textarea class="form-textarea" placeholder="请输入在校经历描述" defaultValue="{{editForm.description}}" maxLength="{{500}}" onChange="onTextareaChange" data-field="description" ref="handleTextareaRef" />
+        </view>
+      </block>
+
+      <block a:if="{{editingModuleType === 'internship' || editingModuleType === 'workExperience'}}">
+        <view class="form-group">
+          <view class="form-label">公司名称</view>
+          <input class="form-input" placeholder="请输入公司名称" value="{{editForm.company}}" onInput="onEditFormInput" data-field="company" />
+        </view>
+        <view class="form-group">
+          <view class="form-label">职位</view>
+          <input class="form-input" placeholder="请输入职位" value="{{editForm.position}}" onInput="onEditFormInput" data-field="position" />
+        </view>
+        <view class="form-row">
+          <view class="form-group half">
+            <view class="form-label">开始时间</view>
+            <view class="form-input" onTap="onOpenDatePicker" data-field="startDate">{{editForm.startDate || '请选择'}}</view>
+          </view>
+          <view class="form-group half">
+            <view class="form-label">结束时间</view>
+            <view class="form-input" onTap="onOpenDatePicker" data-field="endDate">{{editForm.endDate || '请选择'}}</view>
+          </view>
+        </view>
+        <view class="form-group">
+          <view class="form-label">工作描述</view>
+          <ant-textarea class="form-textarea" placeholder="请输入工作描述" defaultValue="{{editForm.description}}" maxLength="{{500}}" onChange="onTextareaChange" data-field="description" ref="handleTextareaRef" />
+        </view>
+      </block>
+
+      <block a:if="{{editingModuleType === 'projectExperience'}}">
+        <view class="form-group">
+          <view class="form-label">项目名称</view>
+          <input class="form-input" placeholder="请输入项目名称" value="{{editForm.name}}" onInput="onEditFormInput" data-field="name" />
+        </view>
+        <view class="form-group">
+          <view class="form-label">担任角色</view>
+          <input class="form-input" placeholder="如：前端开发" value="{{editForm.role}}" onInput="onEditFormInput" data-field="role" />
+        </view>
+        <view class="form-row">
+          <view class="form-group half">
+            <view class="form-label">开始时间</view>
+            <view class="form-input" onTap="onOpenDatePicker" data-field="startDate">{{editForm.startDate || '请选择'}}</view>
+          </view>
+          <view class="form-group half">
+            <view class="form-label">结束时间</view>
+            <view class="form-input" onTap="onOpenDatePicker" data-field="endDate">{{editForm.endDate || '请选择'}}</view>
+          </view>
+        </view>
+        <view class="form-group">
+          <view class="form-label">项目描述</view>
+          <ant-textarea class="form-textarea" placeholder="请输入项目描述" defaultValue="{{editForm.description}}" maxLength="{{500}}" onChange="onTextareaChange" data-field="description" ref="handleTextareaRef" />
+        </view>
+      </block>
+
+      <block a:if="{{editingModuleType === 'skills'}}">
+        <view class="skill-list">
+          <view class="skill-item" a:for="{{editFormSkills}}" a:key="index" data-index="{{index}}">
+            <view class="skill-row">
+              <input
+                class="form-input flex-1"
+                placeholder="技能名称"
+                value="{{item.name}}"
+                onInput="onSkillInput"
+                data-index="{{index}}"
+                data-field="name"
+              />
+              <input
+                class="form-input flex-1 ml-16"
+                placeholder="掌握程度"
+                value="{{item.level}}"
+                onInput="onSkillInput"
+                data-index="{{index}}"
+                data-field="level"
+              />
+              <view class="skill-delete" onTap="onDeleteSkill" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+        <view class="add-sub-btn" onTap="onAddSkill">+ 添加技能</view>
+      </block>
+
+      <block a:if="{{editingModuleType === 'hobbies'}}">
+        <view class="skill-list">
+          <view class="skill-item" a:for="{{editFormSkills}}" a:key="index" data-index="{{index}}">
+            <view class="skill-row">
+              <input
+                class="form-input flex-1"
+                placeholder="爱好名称"
+                value="{{item.name}}"
+                onInput="onSkillInput"
+                data-index="{{index}}"
+                data-field="name"
+              />
+              <view class="skill-delete" onTap="onDeleteSkill" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+        <view class="add-sub-btn" onTap="onAddSkill">+ 添加爱好</view>
+      </block>
+
+      <block a:if="{{editingModuleType === 'selfEvaluation'}}">
+        <view class="form-group">
+          <view class="form-label">自我评价</view>
+          <ant-textarea class="form-textarea large" placeholder="请介绍自己，突出个人优势和特点" defaultValue="{{editForm.content}}" maxLength="{{500}}" onChange="onTextareaChange" data-field="content" ref="handleTextareaRef" />
+        </view>
+      </block>
+
+      <view class="popup-actions">
+        <ant-button type="default" onTap="onCloseEditPopup">取消</ant-button>
+        <ant-button type="primary" onTap="onSaveModule">保存</ant-button>
+      </view>
+
+      <ant-date-picker
+        visible="{{showDatePicker}}"
+        value="{{datePickerValue}}"
+        precision="month"
+        format="YYYY.MM"
+        title="选择日期"
+        onOk="onDateOk"
+        onCancel="onDateCancel"
+        onVisibleChange="onDateVisibleChange"
+      />
+    </view>
+  </ant-popup>
+</view>

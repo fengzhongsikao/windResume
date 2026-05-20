@@ -1,0 +1,12 @@
+{
+  "format": 2,
+  "compileOptions": {
+    "less": true,
+    "typescript": true,
+    "component2": true
+  },
+  "developOptions": {
+    "skipTranspile": true,
+    "hotReload": true
+  }
+}

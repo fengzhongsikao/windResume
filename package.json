@@ -1,0 +1,9 @@
+{
+  "devDependencies": {
+    "@mini-types/alipay": "^3"
+  },
+  "dependencies": {
+    "antd-mini": "^3.4.3",
+    "zustand": "^5.0.13"
+  }
+}

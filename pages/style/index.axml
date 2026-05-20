@@ -1,0 +1,40 @@
+<view class="style-page">
+  <view class="page-title">选择简历样式</view>
+  <view class="page-desc">10套精美模板，总有一款适合你</view>
+
+  <view class="template-grid">
+    <view
+      class="template-card {{selectedTemplate === item.id ? 'active' : ''}}"
+      a:for="{{templates}}"
+      a:key="id"
+      data-id="{{item.id}}"
+      onTap="onSelectTemplate"
+    >
+      <view class="template-preview" style="background: {{item.color}};">
+        <view class="preview-header">
+          <view class="preview-line short"></view>
+        </view>
+        <view class="preview-body">
+          <view class="preview-line"></view>
+          <view class="preview-line medium"></view>
+          <view class="preview-line"></view>
+          <view class="preview-line medium"></view>
+          <view class="preview-line short"></view>
+        </view>
+      </view>
+      <view class="template-info">
+        <view class="template-name">
+          {{item.name}}
+          <view class="check-mark" a:if="{{selectedTemplate === item.id}}">✓</view>
+        </view>
+        <view class="template-desc">{{item.desc}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="save-btn-wrap">
+    <ant-button type="primary" size="large" onTap="onSaveTemplate">
+      确认选择
+    </ant-button>
+  </view>
+</view>

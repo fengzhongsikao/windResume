@@ -1,0 +1,51 @@
+<view class="home-page">
+  <view class="header">
+    <view class="header-title">简历生成器</view>
+    <view class="header-desc">轻松创建你的专属简历</view>
+  </view>
+
+  <view class="main-actions">
+    <view class="action-card" onTap="goToEdit">
+      <view class="action-icon-wrapper edit">
+        <view class="action-icon">📄</view>
+      </view>
+      <view class="action-content">
+        <view class="action-title">制作简历</view>
+        <view class="action-desc">填写信息，快速生成</view>
+      </view>
+      <view class="action-arrow">›</view>
+    </view>
+
+    <view class="action-card" onTap="goToStyle">
+      <view class="action-icon-wrapper style">
+        <view class="action-icon">🎨</view>
+      </view>
+      <view class="action-content">
+        <view class="action-title">简历样式</view>
+        <view class="action-desc">10套精美模板任选</view>
+      </view>
+      <view class="action-arrow">›</view>
+    </view>
+  </view>
+
+  <view class="info-section" a:if="{{hasData}}">
+    <view class="section-title">我的简历</view>
+    <view class="resume-info-card" onTap="goToPreview">
+      <view class="info-row">
+        <view class="info-label">姓名</view>
+        <view class="info-value">{{basicInfo.name || '未填写'}}</view>
+      </view>
+      <view class="info-row">
+        <view class="info-label">已选模板</view>
+        <view class="info-value highlight">{{templateName}}</view>
+      </view>
+      <view class="info-row">
+        <view class="info-label">已添加模块</view>
+        <view class="info-value">{{moduleCount}} 个</view>
+      </view>
+      <view class="preview-btn">
+        <view class="preview-btn-text">预览简历 ›</view>
+      </view>
+    </view>
+  </view>
+</view>

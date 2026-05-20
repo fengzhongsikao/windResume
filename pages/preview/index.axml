@@ -1,0 +1,130 @@
+<view class="preview-page">
+  <view class="toolbar">
+    <view class="toolbar-btn" onTap="goBack">‹ 返回</view>
+    <view class="toolbar-title">简历预览</view>
+    <view class="toolbar-btn" onTap="onSaveToAlbum">保存图</view>
+  </view>
+
+  <scroll-view class="preview-scroll" scroll-y scroll-top="{{scrollTop}}" enhanced show-scrollbar="{{false}}">
+    <view class="resume-container template-{{selectedTemplate}}" id="resumeContainer">
+      <view class="resume-header">
+        <view class="avatar-wrap">
+          <view class="avatar-placeholder">{{avatarText}}</view>
+        </view>
+        <view class="header-info">
+          <view class="resume-name">{{basicInfo.name || '未填写'}}</view>
+          <view class="header-contact">
+            <view class="contact-item" a:if="{{basicInfo.age}}">{{basicInfo.age}}岁</view>
+            <view class="contact-item" a:if="{{basicInfo.email}}">{{basicInfo.email}}</view>
+            <view class="contact-item" a:if="{{basicInfo.phone}}">{{basicInfo.phone}}</view>
+          </view>
+        </view>
+      </view>
+
+      <view class="resume-body">
+        <block a:for="{{modules}}" a:key="id">
+          <view class="section-block">
+            <view class="section-title-wrap">
+              <view class="section-dot"></view>
+              <view class="section-title">{{item.label}}</view>
+            </view>
+
+            <block a:if="{{item.type === 'jobIntention'}}">
+              <view class="intention-row">
+                <view class="intention-tag">{{item.data.position || '未填写'}}</view>
+                <view class="intention-tag">{{item.data.city || '未填写'}}</view>
+                <view class="intention-tag">{{item.data.salary || '未填写'}}</view>
+                <view class="intention-tag">{{item.data.type || '未填写'}}</view>
+              </view>
+            </block>
+
+            <block a:if="{{item.type === 'education'}}">
+              <view class="exp-card">
+                <view class="exp-header">
+                  <view class="exp-title">{{item.data.school || '未填写'}}</view>
+                  <view class="exp-date">{{item.data.startDate}} - {{item.data.endDate}}</view>
+                </view>
+                <view class="exp-sub">{{item.data.major}} · {{item.data.degree}}</view>
+                <view class="exp-desc" a:if="{{item.data.description}}">{{item.data.description}}</view>
+              </view>
+            </block>
+
+            <block a:if="{{item.type === 'internship' || item.type === 'workExperience'}}">
+              <view class="exp-card">
+                <view class="exp-header">
+                  <view class="exp-title">{{item.data.position || '未填写'}}</view>
+                  <view class="exp-date">{{item.data.startDate}} - {{item.data.endDate}}</view>
+                </view>
+                <view class="exp-sub">{{item.data.company || '未填写'}}</view>
+                <view class="exp-desc" a:if="{{item.data.description}}">{{item.data.description}}</view>
+              </view>
+            </block>
+
+            <block a:if="{{item.type === 'projectExperience'}}">
+              <view class="exp-card">
+                <view class="exp-header">
+                  <view class="exp-title">{{item.data.name || '未填写'}}</view>
+                  <view class="exp-date">{{item.data.startDate}} - {{item.data.endDate}}</view>
+                </view>
+                <view class="exp-sub">{{item.data.role || '未填写'}}</view>
+                <view class="exp-desc" a:if="{{item.data.description}}">{{item.data.description}}</view>
+              </view>
+            </block>
+
+            <block a:if="{{item.type === 'skills'}}">
+              <view class="tag-list">
+                <view class="tag-item" a:for="{{item.data}}" a:for-item="skill" a:key="index">
+                  <view class="tag-name">{{skill.name}}</view>
+                  <view class="tag-level" a:if="{{skill.level}}">{{skill.level}}</view>
+                </view>
+              </view>
+            </block>
+
+            <block a:if="{{item.type === 'hobbies'}}">
+              <view class="tag-list">
+                <view class="tag-item simple" a:for="{{item.data}}" a:for-item="hobby" a:key="index">
+                  {{hobby.name}}
+                </view>
+              </view>
+            </block>
+
+            <block a:if="{{item.type === 'selfEvaluation'}}">
+              <view class="eval-text">{{item.data.content || '未填写'}}</view>
+            </block>
+          </view>
+        </block>
+
+        <view class="section-empty" a:if="{{modules.length === 0}}">
+          <view class="empty-hint">暂未添加模块，请先在编辑页添加</view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="bottom-bar">
+    <view class="bottom-btn" onTap="goToEdit">
+      <view class="btn-icon">✏️</view>
+      <view>编辑</view>
+    </view>
+    <view class="bottom-btn" onTap="goToStyle">
+      <view class="btn-icon">🎨</view>
+      <view>换模板</view>
+    </view>
+    <view class="bottom-btn" onTap="onSaveToAlbum">
+      <view class="btn-icon">🖼️</view>
+      <view>保存相册</view>
+    </view>
+    <view class="bottom-btn primary" onTap="onSavePdf">
+      <view class="btn-icon">📄</view>
+      <view>保存PDF</view>
+    </view>
+  </view>
+
+  <canvas
+    a:if="{{canvasReady}}"
+    id="pdfCanvas"
+    class="hidden-canvas"
+    width="{{canvasWidth}}"
+    height="{{canvasHeight}}"
+  ></canvas>
+</view>

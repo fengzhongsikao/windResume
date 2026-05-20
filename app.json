@@ -1,0 +1,12 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/edit/index",
+    "pages/style/index",
+    "pages/preview/index"
+  ],
+  "lazyCodeLoading": "renderedComponents",
+  "window": {
+    "defaultTitle": "简历生成器"
+  }
+}
